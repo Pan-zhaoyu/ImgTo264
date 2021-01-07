@@ -1,0 +1,52 @@
+################################2020年12月16日##########################################
+################################Author: PAN##########################################
+安装live555库
+wget  http://www.live555.com/liveMedia/public/live555-latest.tar.gz
+tar xzf live555-latest.tar.gz
+live 555 pkg is done already
+参考https://blog.csdn.net/dongdong_csdn/article/details/91143693?utm_medium=distribute.pc_relevant_download.none-task-blog-baidujs-3.nonecase&depth_1-utm_source=distribute.pc_relevant_download.none-task-blog-baidujs-3.nonecase
+
+生成Make文件，生成需要的文件在live文件夹下
+$cd live
+$./genMakefiles linux-64bit    #注意后面这个参数是根据live文件夹下config.<后缀>获取得到的
+$make
+make之后会在当前目录下生成mediaServer 文件夹，其中有一个live555MediaServer可执行文件
+$cd mediaServer
+$chmod 777 live555MediaServer
+$sudo ./live555MediaServer(使用默认端口554)
+
+错误：服务器 IP地址有误，须配置IP
+修改本地ip地址
+$sudo vi /etc/hosts
+加入ip地址 DVR:192.168.32.102到usr(ad16)
+
+重新运行sudo ./live555MediaServer
+
+###################################################################################
+安装x264库支持H.264视频转码
+
+# git clone https://code.videolan.org/videolan/x264.git
+git clone git://git.videolan.org/x264.git
+x264 pkg is not already
+
+$cd x264
+$./configure --enable-shared
+
+出现下列错误： Found no assembler
+Minimum version is nasm-2.13
+If you really want to compile without asm, configure with --disable-asm.
+
+需安装 nasm-2.13
+https://www.nasm.us/pub/nasm/releasebuilds/2.13/
+tar -xvf nasm-2.13.tar.gz
+nasm-2.13 pkg is done already
+
+$cd nasm-2.13
+$./configure --prefix=/usr --enable-shared
+$make
+$make install
+
+重新配置 x264
+./configure --prefix=/usr --enable-shared
+make
+make install 
